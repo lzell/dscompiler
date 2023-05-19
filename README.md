@@ -1,7 +1,8 @@
 ## About
 
-DesignSystemCompiler compiles design system tokens defined in Figma into named
-constants in Swift. Tokens are emitted as if a swift engineer coded them.
+`dscompiler` is short for "design system compiler". It compiles design system
+tokens defined in Figma into named constants in Swift. Tokens are emitted as if
+a swift engineer coded them.
 
 Using this project will:
 
@@ -42,7 +43,7 @@ engineering (my email is in my github profile).
 
 3. We build in the open.
 
-   DesignSystemCompiler has an open, extensible architecture. Contributors can add
+   `dscompiler` has an open, extensible architecture. Contributors can add
    support for other design tools or targeting different frontends. Customers
    can look under the hood and see that nothing unexpected is happening with
    their data.
