@@ -15,6 +15,10 @@ If you have questions, want support or have feedback to offer, please reach out
 to [Todd](https://toddham.com) for design or [me](https://github.com/lzell) for
 engineering (my email is in my github profile).
 
+## How do I build it?
+
+Following the instructions in [docs/engineering.md](docs/engineering.md)
+
 ## How is this different from other projects?
 
 1. We emit code only for the design system, not the full design.

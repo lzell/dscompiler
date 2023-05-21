@@ -1,0 +1,20 @@
+{
+  "name": "dscompiler",
+  "version": "1.0.0",
+  "description": "Your Figma Plugin",
+  "main": "code.js",
+  "scripts": {
+    "bundle": "./node_modules/.bin/esbuild code.ts --bundle --outfile=code.js",
+    "typecheck": "tsc --project tsconfig.json",
+    "watch": "parallel --ungroup 'npm run' ::: watch_typecheck watch_bundle",
+    "watch_bundle": "npm run bundle -- --watch=forever",
+    "watch_typecheck": "npm run typecheck -- --watch --preserveWatchOutput"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.64.0",
+    "esbuild": "0.17.19",
+    "typescript": "*"
+  }
+}
