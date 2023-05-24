@@ -5,9 +5,11 @@
   "main": "code.js",
   "scripts": {
     "bundle": "./node_modules/.bin/esbuild src/code.ts --bundle --outfile=code.js",
+    "test": "jest",
     "typecheck": "tsc --project tsconfig.json",
     "watch": "parallel --ungroup 'npm run' ::: watch_typecheck watch_bundle",
     "watch_bundle": "npm run bundle -- --watch=forever",
+    "watch_test": "npm run test -- --watch",
     "watch_typecheck": "npm run typecheck -- --watch --preserveWatchOutput"
   },
   "author": "",
