@@ -16,6 +16,7 @@
     "@figma/plugin-typings": "^1.64.0",
     "@types/jest": "^29.5.1",
     "esbuild": "0.17.19",
+    "jest": "^29.5.0",
     "typescript": "*"
   }
 }
