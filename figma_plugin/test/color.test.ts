@@ -15,15 +15,35 @@ import { getPlaceholder } from '../src/color.ts'
 
 // Build up a test fake and then
 
-type FakePaint = {
+type FakeColor = {
+  r: number
+  g: number
+  b: number
+}
 
+type FakePaint = {
+  type: string // This could be tightened to "SOLID" | "OTHER-OPTION" | etc.
+  visible: boolean
+  opacity: number
+  blendMode: string // This could be tightened to "NORMAL" | "OTHER-OPTION" | etc.
+  color: FakeColor
 }
 
 type FakePaintStyle = {
   id: string
-  paints: ARRAY_OF_PAINTS
+  paints: FakePaint[]
 }
 
+type FakeFigma = { getLocalPaintStyles: () => FakePaintStyle[] }
+function fakeGetLocalPaintStyles(): FakePaintStyle[] {
+  return [{"id": "123", "paints": [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]}]
+}
+
+let figma: FakeFigma = { getLocalPaintStyles: fakeGetLocalPaintStyles }
+// That worked. I don't know if I could get away with it with less boilerplate.
+
+let paints: FakePaint[] =  [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]
+let paintStyles: FakePaintStyle[] = [{"id": "123", "paints": paints}]
 
 type X = { thing: (a: number) => string }
 function brah(a: number): string {
@@ -32,9 +52,6 @@ function brah(a: number): string {
 }
 let z: X = {thing: brah}
 
-type FakeFigma {
-  getLocalPaintStyles: () => ARRAY_OF_PAINT_STYLES
-}
 
 test('getColors binds to getLocalPaintStyles', () => {
   // Use a mock here.
