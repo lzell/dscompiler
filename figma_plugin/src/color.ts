@@ -1,24 +1,25 @@
 import { camelCase } from 'lodash';
+import { FigmaProvider } from './figma_provider.ts'
 
 // https://www.typescriptlang.org/play#example/assertion-functions
 declare function assert(value: unknown): asserts value;
 
 export interface Color {
-  readonly name: string | null
+  readonly name: string
   readonly red: number
   readonly green: number
   readonly blue: number
   readonly opacity: number
 }
 
-export function getColors(): Promise<Color[]> {
+export function getColors(figmaProvider: FigmaProvider): Promise<Color[]> {
   return new Promise((resolve, reject) => {
-    resolve(figma.getLocalPaintStyles().map(paintStyleToColor))
+    resolve(figmaProvider.getLocalPaintStyles().map(paintStyleToColor))
   })
 }
 
 // TODO: Fix any
-function paintStyleToColor(paintStyle: any): Color {
+function paintStyleToColor(paintStyle: PaintStyle): Color {
   assert(paintStyle.paints.count > 0)
   const paint = paintStyle.paints[0]
   return {

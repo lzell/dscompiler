@@ -1,4 +1,4 @@
-import { getPlaceholder } from '../src/color.ts'
+import { getColors } from '../src/color.ts'
 
 
 // Could use JSON.parse to create the fakes from dumped objects.
@@ -42,30 +42,31 @@ function fakeGetLocalPaintStyles(): FakePaintStyle[] {
 let figma: FakeFigma = { getLocalPaintStyles: fakeGetLocalPaintStyles }
 // That worked. I don't know if I could get away with it with less boilerplate.
 
-let paints: FakePaint[] =  [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]
-let paintStyles: FakePaintStyle[] = [{"id": "123", "paints": paints}]
+// let paints: FakePaint[] =  [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]
+// let paintStyles: FakePaintStyle[] = [{"id": "123", "paints": paints}]
 
-type X = { thing: (a: number) => string }
-function brah(a: number): string {
-  console.log(a)
-  return "hi"
-}
-let z: X = {thing: brah}
+// type X = { thing: (a: number) => string }
+// function brah(a: number): string {
+//   console.log(a)
+//   return "hi"
+// }
+// let z: X = {thing: brah}
 
 
-test('getColors binds to getLocalPaintStyles', () => {
+test('getColors binds to getLocalPaintStyles', async () => {
+  const foo = await getColors(figma)
+  expect(foo[0].red).toBe(1)
   // Use a mock here.
 })
 
-test('
 
-test('placeholder test', () => {
-  // How do I want to write this?
-  // Pass mock
-  // Assert `getLocalPaintStyles` is called
-  getColors(mockFigma)
-  expect(getPlaceholder()).toBe(123)
-})
+//test('placeholder test', () => {
+//  // How do I want to write this?
+//  // Pass mock
+//  // Assert `getLocalPaintStyles` is called
+//  getColors(mockFigma)
+//  expect(getPlaceholder()).toBe(123)
+//})
 
 // Test double
 
