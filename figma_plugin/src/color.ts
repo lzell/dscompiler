@@ -1,8 +1,5 @@
 import { camelCase } from 'lodash';
-import { FigmaProvider } from './figma_provider.ts'
-
-// https://www.typescriptlang.org/play#example/assertion-functions
-declare function assert(value: unknown): asserts value;
+import { PluginAPIProvider } from './plugin_api_provider.ts'
 
 export interface Color {
   readonly name: string
@@ -12,21 +9,22 @@ export interface Color {
   readonly opacity: number
 }
 
-export function getColors(figmaProvider: FigmaProvider): Promise<Color[]> {
+export function getColors(figmaProvider: PluginAPIProvider): Promise<Color[]> {
   return new Promise((resolve, reject) => {
+    // TODO: Do a runtime check here to ensure that I have types of SolidPaint, not any of the other subtypes of Paint
     resolve(figmaProvider.getLocalPaintStyles().map(paintStyleToColor))
   })
 }
 
 // TODO: Fix any
 function paintStyleToColor(paintStyle: PaintStyle): Color {
-  assert(paintStyle.paints.count > 0)
-  const paint = paintStyle.paints[0]
+  console.assert(paintStyle.paints.length > 0)
+  const paint = paintStyle.paints[0] as SolidPaint
   return {
     name: camelCase(paintStyle.name),
     red: paint.color.r,
     green: paint.color.g,
     blue: paint.color.b,
-    opacity: paint.opacity
+    opacity: paint.opacity ?? 1
   }
 }
