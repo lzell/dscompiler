@@ -1,6 +1,42 @@
 import { getColors } from '../src/color.ts'
 import { PluginAPIProtocol } from '../src/plugin_api_protocol.ts'
 import { makePaint, makePaintStyle } from './factory.ts'
+import { jest } from '@jest/globals';
+
+class FakeFigma implements PluginAPIProtocol {
+  getLocalPaintStyles(): PaintStyle[] {
+    return [makePaintStyle()]
+  }
+}
+
+test('getColors binds to getLocalPaintStyles', async () => {
+  const getLocalPaintStyles = jest.fn(() => { return Array<PaintStyle>() });
+  const figma: PluginAPIProtocol = { getLocalPaintStyles: getLocalPaintStyles };
+  await getColors(figma);
+  expect(getLocalPaintStyles).toHaveBeenCalled();
+})
+
+
+// Document how to create multiple paint styles as a localStyle.
+// test('all paint styles other than the first are ignored')
+
+//
+//
+//
+// //test('placeholder test', () => {
+// //  // How do I want to write this?
+// //  // Pass mock
+// //  // Assert `getLocalPaintStyles` is called
+// //  getColors(mockFigma)
+// //  expect(getPlaceholder()).toBe(123)
+// //})
+//
+// // Test double
+//
+//
+// // I could pass in a mock and make sure it's called in the way I expect.
+// // That's pretty white box.
+// // How about just DI a test double?
 //
 //
 // // Could use JSON.parse to create the fakes from dumped objects.
@@ -44,12 +80,6 @@ import { makePaint, makePaintStyle } from './factory.ts'
 //
 
 // I could make this an object just as easily with `fakeFigma: PluginAPIProtocol = { ... define object }`
-class FakeFigma implements PluginAPIProtocol {
-
-  getLocalPaintStyles(): PaintStyle[] {
-    return [makePaintStyle()]
-  }
-}
 //
 // let figma: FakeFigma = new FakeFigma()
 // // That worked. I don't know if I could get away with it with less boilerplate.
@@ -65,30 +95,3 @@ class FakeFigma implements PluginAPIProtocol {
 // // let z: X = {thing: brah}
 //
 //
-test('getColors binds to getLocalPaintStyles', async () => {
-  const figma = new FakeFigma()
-  const foo = await getColors(figma)
-  expect(foo[0].red).toBe(1)
-  // Use a mock here. For the original test.
-})
-
-// Document how to create multiple paint styles as a localStyle.
-// test('all paint styles other than the first are ignored')
-
-//
-//
-//
-// //test('placeholder test', () => {
-// //  // How do I want to write this?
-// //  // Pass mock
-// //  // Assert `getLocalPaintStyles` is called
-// //  getColors(mockFigma)
-// //  expect(getPlaceholder()).toBe(123)
-// //})
-//
-// // Test double
-//
-//
-// // I could pass in a mock and make sure it's called in the way I expect.
-// // That's pretty white box.
-// // How about just DI a test double?
