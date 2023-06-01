@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "noEmit": true,
-    "noUnusedLocals": true,
+    //"noUnusedLocals": true, // (TURN THIS OFF WHEN REPL STARTS AUTOMATICALLY); ALSO HOW DO I RUN THIS WITHOUT NETWORK CONNECTION?
     "skipLibCheck": true, // https://github.com/figma/plugin-typings/issues/96#issuecomment-982461389
   }
 }

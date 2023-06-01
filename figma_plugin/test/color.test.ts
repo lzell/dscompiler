@@ -1,5 +1,6 @@
 import { getColors } from '../src/color.ts'
-import { PluginAPIProvider } from '../src/plugin_api_provider.ts'
+import { PluginAPIProtocol } from '../src/plugin_api_protocol.ts'
+import { makePaint, makePaintStyle } from './factory.ts'
 //
 //
 // // Could use JSON.parse to create the fakes from dumped objects.
@@ -37,16 +38,16 @@ import { PluginAPIProvider } from '../src/plugin_api_provider.ts'
 //   paints: FakePaint[]
 // }
 //
-// // Maybe this needs to be a class that extends FigmaProvider, and call the constructor. Seems I can't create a type that conforms to an interface.
+// // Maybe this needs to be a class that extends FigmaProtocol, and call the constructor. Seems I can't create a type that conforms to an interface.
 //
 // const x2: SolidPaint[] = [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]
 //
 
-// I could make this an object just as easily with `fakeFigma: PluginAPIProvider = { ... define object }`
-class FakeFigma implements PluginAPIProvider {
+// I could make this an object just as easily with `fakeFigma: PluginAPIProtocol = { ... define object }`
+class FakeFigma implements PluginAPIProtocol {
 
   getLocalPaintStyles(): PaintStyle[] {
-    return [{"id": "123", "paints": [{"type":"SOLID","visible":true,"opacity":1,"blendMode":"NORMAL","color":{"r":1,"g":0.5,"b":0}}]}]
+    return [makePaintStyle()]
   }
 }
 //
@@ -70,6 +71,11 @@ test('getColors binds to getLocalPaintStyles', async () => {
   expect(foo[0].red).toBe(1)
   // Use a mock here. For the original test.
 })
+
+// Document how to create multiple paint styles as a localStyle.
+// test('all paint styles other than the first are ignored')
+
+//
 //
 //
 // //test('placeholder test', () => {

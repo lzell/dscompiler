@@ -1,5 +1,5 @@
-import { camelCase } from 'lodash';
-import { PluginAPIProvider } from './plugin_api_provider.ts'
+import { camelCase, compact } from 'lodash';
+import { PluginAPIProtocol } from './plugin_api_protocol.ts'
 
 export interface Color {
   readonly name: string
@@ -9,22 +9,25 @@ export interface Color {
   readonly opacity: number
 }
 
-export function getColors(figmaProvider: PluginAPIProvider): Promise<Color[]> {
+export function getColors(figma: PluginAPIProtocol): Promise<Color[]> {
   return new Promise((resolve, reject) => {
-    // TODO: Do a runtime check here to ensure that I have types of SolidPaint, not any of the other subtypes of Paint
-    resolve(figmaProvider.getLocalPaintStyles().map(paintStyleToColor))
+    resolve(compact(figma.getLocalPaintStyles().map(paintStyleToColor)))
   })
 }
 
-// TODO: Fix any
-function paintStyleToColor(paintStyle: PaintStyle): Color {
-  console.assert(paintStyle.paints.length > 0)
-  const paint = paintStyle.paints[0] as SolidPaint
-  return {
-    name: camelCase(paintStyle.name),
-    red: paint.color.r,
-    green: paint.color.g,
-    blue: paint.color.b,
-    opacity: paint.opacity ?? 1
+
+function paintStyleToColor(paintStyle: PaintStyle): Color | null {
+  console.assert(paintStyle.paints.length > 0, "Expected paint styles to have at least one paint")
+  const isSolid = (paint: Paint): paint is SolidPaint => paint.type === "SOLID";
+  const paint = paintStyle.paints.find(isSolid)
+  if (paint) {
+    return {
+      name: camelCase(paintStyle.name),
+      red: paint.color.r,
+      green: paint.color.g,
+      blue: paint.color.b,
+      opacity: paint.opacity ?? 1
+    }
   }
+  return null
 }
