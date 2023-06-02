@@ -5,7 +5,7 @@
   "main": "code.js",
   "scripts": {
     "bundle": "./node_modules/.bin/esbuild src/code.ts --bundle --outfile=code.js",
-    "repl": "npx ts-node",
+    "repl": "npx ts-node -r tsconfig-paths/register",
     "test": "jest",
     "typecheck": "tsc --project tsconfig.json",
     "watch": "parallel --ungroup 'npm run' ::: watch_typecheck watch_bundle",
