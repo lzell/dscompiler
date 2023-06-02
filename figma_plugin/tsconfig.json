@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noImplicitAny": true,
     "noUnusedLocals": true, // Turn this off when using repl
     "baseUrl": ".",
     "skipLibCheck": true, // https://github.com/figma/plugin-typings/issues/96#issuecomment-982461389
