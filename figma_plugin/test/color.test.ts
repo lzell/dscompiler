@@ -1,19 +1,31 @@
-import { getColors } from '../src/color.ts'
-import { PluginAPIProtocol } from '../src/plugin_api_protocol.ts'
-import { makePaint, makePaintStyle } from './factory.ts'
-import { jest } from '@jest/globals';
+import { inferColors } from '../src/core/origins/figma/infer_colors.ts'
+import { paintStyleToColor } from '../src/core/origins/figma/infer_colors.ts'
+import { GradientPaintProtocol } from '../src/core/origins/figma/api_bridge.ts'
 
-class FakeFigma implements PluginAPIProtocol {
-  getLocalPaintStyles(): PaintStyle[] {
-    return [makePaintStyle()]
-  }
-}
+//import { PluginAPIProtocol } from '../src/plugin_api_protocol.ts'
+//import { makePaint, makePaintStyle } from './factory.ts'
+//import { jest } from '@jest/globals';
+//
+//import { paintStyleToColor } from '../src/color.ts'
+//
+//class FakeFigma implements PluginAPIProtocol {
+//  getLocalPaintStyles(): PaintStyle[] {
+//    return [makePaintStyle()]
+//  }
+//}
+//
+test("infering colors from Figma uses the plugin API call getLocalPaintStyles", () => {
+  const getLocalPaintStyles = jest.fn(() => { return Array<PaintStyle>() })
+  const figma = { getLocalPaintStyles: getLocalPaintStyles }
+  inferColors(figma)
+  expect(getLocalPaintStyles).toHaveBeenCalled()
+})
 
-test('getColors binds to getLocalPaintStyles', async () => {
-  const getLocalPaintStyles = jest.fn(() => { return Array<PaintStyle>() });
-  const figma: PluginAPIProtocol = { getLocalPaintStyles: getLocalPaintStyles };
-  await getColors(figma);
-  expect(getLocalPaintStyles).toHaveBeenCalled();
+
+// Create a couple fake paints. Pass to paintStyleToColor
+test("paint colors that are not solid are ignored", () => {
+  const paint: GradientPaintProtocol = {type: 'GRADIENT_LINEAR'}
+  expect(paintStyleToColor({name: 'dummy', paints: [paint]})).toBe(null)
 })
 
 
