@@ -17,7 +17,7 @@ public extension Color {
     /// At any call site that requires a color, type \`Color.DesignSystem.<esc>\`
     struct DesignSystem {
 `
-  for (let color of colors) {
+  for (const color of colors) {
     swift_content += `        ${emitColor(color)}\n`
   }
 
