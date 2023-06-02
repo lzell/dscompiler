@@ -5,6 +5,8 @@
   "main": "code.js",
   "scripts": {
     "bundle": "./node_modules/.bin/esbuild src/code.ts --bundle --outfile=code.js",
+    "linter": "npx eslint .",
+    "linter_fixer": "npx eslint --fix .",
     "repl": "npx ts-node -r tsconfig-paths/register",
     "test": "jest",
     "typecheck": "tsc --project tsconfig.json",
