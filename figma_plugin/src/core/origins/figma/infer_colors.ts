@@ -18,7 +18,7 @@ export function inferColors(figma: PluginAPIProtocol): ReadonlyArray<Color> {
 // The name of the paint style is camelCased to form the Color model name.
 export function paintStyleToColor(paintStyle: PaintStyleProtocol): Color | null {
   console.assert(paintStyle.paints.length > 0, "Expected paint styles to have at least one paint")
-  const isSolid = (paint: PaintProtocol): paint is SolidPaintProtocol => paint.type === "SOLID";
+  const isSolid = (paint: PaintProtocol): paint is SolidPaintProtocol => paint.type === "SOLID"
   const paint = paintStyle.paints.find(isSolid)
   if (paint) {
     return {

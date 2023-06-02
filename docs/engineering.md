@@ -64,6 +64,19 @@ Run tests on filesystem changes to `figma_plugin/src` and `figma_plugin/test`:
     :: type 'a' when jest prompt appears
 
 
+### How to run the linter
+
+Run linter:
+
+    cd <project-dir>/figma_plugin
+    npm run linter
+
+Run linter and apply fixes:
+
+    cd <project-dir>/figma_plugin
+    npm run linter_fixer
+
+
 ## References for project setup files
 
 - `manifest.json`
