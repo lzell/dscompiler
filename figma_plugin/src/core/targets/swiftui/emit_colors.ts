@@ -1,5 +1,11 @@
 import { Color } from 'src/core/models/color.ts'
 
+// Given a color model, return an equivalent SwiftUI color definition.
+export function emitColor(color: Color): string {
+  return `public static let ${color.name} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})`
+}
+
+// Given a list of colors, return an equivalent SwiftUI file defining all colors.
 export function emitColors(colors: ReadonlyArray<Color>): string {
   let swift_content = `import SwiftUI
 
@@ -12,13 +18,9 @@ public extension Color {
     struct DesignSystem {
 `
   for (let color of colors) {
-    swift_content += `        public static let ${color.name} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})\n`
+    swift_content += `        ${emitColor(color)}\n`
   }
 
   swift_content += "    }\n}\n"
   return swift_content
 }
-
-//export function generateColorsFile(colors: Color[]): string {
-//}
-//

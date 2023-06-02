@@ -1,18 +1,25 @@
-// Aids in testing. Can create test doubles that function like figma's
-// PluginAPI This should be a strict subset of PluginAPI, defined at
-// node_modules/@figma/plugin-typings/index.d.ts
-// node_modules/@figma/plugin-typings/plugin-api.d.ts
+// This file defines a strict subset of Figma's Plugin API.
+// Browse the full plugin API at:
+//
+//   node_modules/@figma/plugin-typings/index.d.ts
+//   node_modules/@figma/plugin-typings/plugin-api.d.ts
+//
+// We duplicate parts of the API definition for dependency isolation.
+// Source code under `src/core` can run outside of Figma's plugin environment.
+// It also serves as a reference to quickly see which parts of the plugin API we use.
+//
+// Type names are almost have `Protocol` appended to them to distinguish them from
+// from Figma's plugin types. The idea is that call sites can use a type
+// passed from Figma, or from one of our own creation that conforms to <FigmaType>Protocol
+// that we craft ourselves, which is helpful for testing.
+export interface PluginAPIProtocol {
+  getLocalPaintStyles(): PaintStyle[]
+}
 
-// Another option here is to dump the full tree of what we need and create factories on top of it.
-
-// It also functions as a way to see which parts of the API we use.
-
-// Protocol naming is borrowed from swift.
-
-// This will also give us a type error if figma introduces a new type that we aren't handling.
-// Adds a new type to discriminated union
-
-// Dependency isolation.
+export interface PaintStyleProtocol {
+   name: string
+   paints: ReadonlyArray<PaintProtocol>
+}
 
 export interface RGBProtocol {
   readonly r: number
@@ -39,21 +46,3 @@ export interface GradientPaintProtocol {
 }
 
 export declare type PaintProtocol = SolidPaintProtocol | GradientPaintProtocol | ImagePaintProtocol | VideoPaintProtocol
-
-export interface PaintStyleProtocol {
-   name: string
-   paints: ReadonlyArray<PaintProtocol>
-}
-
-// Helper so I can DI a `figma` double for tests.
-
-// `core` is the seam between the figma plugin and the core of the library. We expect consumers to pass in the figma global and let the lib do the rest.
-// At some point, `core` should be plucked out of the 'figma_plugin' tree, and should live outside it.
-// Dependency isolation on figma.
-// We take the bits that we need to generate colors and match the API.
-// The idea is everything under 'core' should be packageable as a library.
-// A consumer of the library would have to pass us the `figma` global.
-export interface PluginAPIProtocol {
-  getLocalPaintStyles(): PaintStyle[]
-}
-
