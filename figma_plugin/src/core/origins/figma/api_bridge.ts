@@ -18,6 +18,7 @@ export interface PluginAPIProtocol {
 
 export interface PaintStyleProtocol {
    name: string
+   description: string
    paints: ReadonlyArray<PaintProtocol>
 }
 

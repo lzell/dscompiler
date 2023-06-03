@@ -23,6 +23,7 @@ export function paintStyleToColor(paintStyle: PaintStyleProtocol): Color | null 
   if (paint) {
     return {
       name: camelCase(paintStyle.name),
+      description: paintStyle.description,
       red: paint.color.r,
       green: paint.color.g,
       blue: paint.color.b,
