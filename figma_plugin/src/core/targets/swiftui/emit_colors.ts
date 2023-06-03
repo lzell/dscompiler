@@ -1,7 +1,7 @@
 import { Color } from 'src/core/models/color.ts'
 
 // Given a color model, return an equivalent SwiftUI color definition.
-export function emitColor(color: Color, indentLevel: number = 0): string {
+export function emitColor(color: Color, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   return [
     `${prefix}/// ${color.description}`,
