@@ -4,7 +4,8 @@
   "description": "Your Figma Plugin",
   "main": "code.js",
   "scripts": {
-    "bundle": "./node_modules/.bin/esbuild src/code.ts --bundle --outfile=code.js",
+    "bundle": "./node_modules/.bin/esbuild src/code.ts --bundle --outfile=dist/code.js",
+    "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --outfile=dist/ui.js && node scripts/buildui.mjs",
     "linter": "npx eslint .",
     "linter_fixer": "npx eslint --fix .",
     "repl": "npx ts-node -r tsconfig-paths/register",
