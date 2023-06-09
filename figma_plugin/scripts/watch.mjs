@@ -9,7 +9,7 @@ const fileExtensionsToWatch = ['.ts', '.js', '.html', '.css', '.liquid'];
 // to accommodate the rapid callback executions from 'fs.watch'.
 // Without this, we would act on file changes multiple times
 // per single file change.
-const fileDidChangeFn = debounce(fileDidChangeHandler, 100, true);
+const fileDidChangeFn = debounce(fileDidChangeHandler) // , 100, true);
 
 // Runs a shell command synchronously, and catches all errors.
 function runAndIgnoreErrors(cmd) {
