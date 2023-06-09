@@ -2,7 +2,7 @@
 //
 // Usage
 // -----
-// It's most convenient to run this script with `npm run bundle_ui`.
+// It's most convenient to run this script as part of `npm run bundle_ui`.
 //
 // However, the script can be invoked on its own with `node scripts/buildui.mjs`.
 // If you are invoking it this way, make sure the dependency `dist/ui.js` is up to date.
