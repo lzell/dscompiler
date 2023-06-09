@@ -2,7 +2,7 @@
   "name": "dscompiler",
   "version": "1.0.0",
   "description": "Your Figma Plugin",
-  "main": "code.js",
+  "main": "dist/main.js",
   "scripts": {
     "bundle": "node scripts/bundle.mjs && node scripts/buildui.mjs",
     "linter": "npx eslint .",

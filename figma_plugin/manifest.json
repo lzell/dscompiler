@@ -2,7 +2,7 @@
   "name": "dscompiler",
   "id": "1240747365971367682",
   "api": "1.0.0",
-  "main": "dist/code.js",
+  "main": "dist/main.js",
   "ui": "dist/ui.html",
   "capabilities": [],
   "enableProposedApi": false,
