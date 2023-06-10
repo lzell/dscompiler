@@ -21,7 +21,7 @@
     git clone git@github.com:lzell/dscompiler.git
     cd dscompiler/figma_plugin
     npm install
-    npm run bundle
+    npm run build
     ```
 
 - Make the plugin available in Figma Desktop:
@@ -34,21 +34,12 @@
 
 ### Building the project automatically on source file changes
 
-- Install GNU Parallel. I use [homebrew](https://brew.sh/) to install this with `brew install parallel`
-
 - Run the bundler and typechecker on every source change:
 
     ```
     cd <project-dir>/figma_plugin
     npm run watch
     ```
-
-Note that the output of the typechecker (`tsc`) and bundler (`esbuild`) are intermingled in the `npm run watch` output.  
-If you'd like to observe the processes separately, use two different shells:
-
-    shell1> npm run watch_bundler
-    shell2> npm run watch_typechecker
-
 
 ### How to run tests
 

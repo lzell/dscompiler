@@ -1,19 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["es6"],
-    "strict": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
-    ],
     "allowImportingTsExtensions": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "isolatedModules": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
     "noEmit": true,
     "noImplicitAny": true,
     "noUnusedLocals": true, // Turn this off when using repl
-    "baseUrl": ".",
     "skipLibCheck": true, // https://github.com/figma/plugin-typings/issues/96#issuecomment-982461389
+    "strict": true,
+    "target": "es6",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
   }
 }
