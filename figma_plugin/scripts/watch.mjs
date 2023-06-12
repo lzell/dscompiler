@@ -36,7 +36,7 @@ function bundleAndTypecheck() {
 }
 
 // Watch for file system changes
-fs.watch("src", (eventType, filename) => {
+fs.watch("src", {recursive: true}, (eventType, filename) => {
   if (fileExtensionsToWatch.includes(path.extname(filename))) {
     fileDidChangeFn(filename)
   }
