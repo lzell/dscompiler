@@ -36,10 +36,12 @@ function bundleAndTypecheck() {
 }
 
 // Watch for file system changes
-fs.watch("src", {recursive: true}, (eventType, filename) => {
-  if (fileExtensionsToWatch.includes(path.extname(filename))) {
-    fileDidChangeFn(filename)
-  }
+["src", "test"].forEach(dir => {
+  fs.watch(dir, {recursive: true}, (eventType, filename) => {
+    if (fileExtensionsToWatch.includes(path.extname(filename))) {
+      fileDidChangeFn(filename)
+    }
+  });
 });
 
 // Build everything one time when I run 'npm run watch'.
