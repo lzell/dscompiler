@@ -3,29 +3,30 @@ import { inferColors } from '../src/core/origins/figma/infer_colors.ts'
 import { emitColor } from '../src/core/targets/swiftui/emit_colors.ts'
 import { emitColors } from '../src/core/targets/swiftui/emit_colors.ts'
 import { paintStyleToColor } from '../src/core/origins/figma/infer_colors.ts'
-import { GradientPaintProtocol } from '../src/core/origins/figma/api_bridge.ts'
-import { ImagePaintProtocol } from '../src/core/origins/figma/api_bridge.ts'
-import { SolidPaintProtocol } from '../src/core/origins/figma/api_bridge.ts'
-import { VideoPaintProtocol } from '../src/core/origins/figma/api_bridge.ts'
+import { IPaintStyle } from '../src/core/origins/figma/api_bridge.ts'
+import { IGradientPaint } from '../src/core/origins/figma/api_bridge.ts'
+import { IImagePaint } from '../src/core/origins/figma/api_bridge.ts'
+import { ISolidPaint } from '../src/core/origins/figma/api_bridge.ts'
+import { IVideoPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { makePaintStyle } from './factories.ts'
 
 test("Infering colors from Figma uses the plugin API call getLocalPaintStyles", () => {
-  const getLocalPaintStyles = jest.fn(() => { return Array<PaintStyle>() })
+  const getLocalPaintStyles = jest.fn(() => { return Array<IPaintStyle>() })
   const figma = { getLocalPaintStyles: getLocalPaintStyles }
   inferColors(figma)
   expect(getLocalPaintStyles).toHaveBeenCalled()
 })
 
 test("Paint colors that are not solid are ignored", () => {
-  const gradientPaint: GradientPaintProtocol = {type: 'GRADIENT_LINEAR'}
-  const imagePaint: ImagePaintProtocol = {type: 'IMAGE'}
-  const videoPaint: VideoPaintProtocol = {type: 'VIDEO'}
+  const gradientPaint: IGradientPaint = {type: 'GRADIENT_LINEAR'}
+  const imagePaint: IImagePaint = {type: 'IMAGE'}
+  const videoPaint: IVideoPaint = {type: 'VIDEO'}
   const paintStyle = makePaintStyle({paints: [gradientPaint, imagePaint, videoPaint]})
   expect(paintStyleToColor(paintStyle)).toBe(null)
 })
 
 test("A solid paint converts to a color model", () => {
-  const paint: SolidPaintProtocol = {type: 'SOLID', color: {r: 1, g: 1, b: 1}, opacity: 0.5}
+  const paint: ISolidPaint = {type: 'SOLID', color: {r: 1, g: 1, b: 1}, opacity: 0.5}
   const color: Color | null = paintStyleToColor(makePaintStyle({paints: [paint]}))
   expect(color).toMatchObject({
     red: 1,
@@ -36,14 +37,14 @@ test("A solid paint converts to a color model", () => {
 })
 
 test("A solid paint without opacity defaults to opacity of 1", () => {
-  const paint: SolidPaintProtocol = {type: 'SOLID', color: {r: 0, g: 0, b: 0}}
+  const paint: ISolidPaint = {type: 'SOLID', color: {r: 0, g: 0, b: 0}}
   const color: Color | null = paintStyleToColor(makePaintStyle({paints: [paint]}))
   expect(color?.opacity).toBe(1)
 })
 
 test("Only the first solid paint is considered when converting to a color model", () => {
-  const paintA: SolidPaintProtocol = {type: 'SOLID', color: {r: 1, g: 0, b: 0}}
-  const paintB: SolidPaintProtocol = {type: 'SOLID', color: {r: 1, g: 1, b: 1}}
+  const paintA: ISolidPaint = {type: 'SOLID', color: {r: 1, g: 0, b: 0}}
+  const paintB: ISolidPaint = {type: 'SOLID', color: {r: 1, g: 1, b: 1}}
   const color: Color | null = paintStyleToColor(makePaintStyle({paints: [paintA, paintB]}))
   expect(color).toMatchObject({
     red: 1,

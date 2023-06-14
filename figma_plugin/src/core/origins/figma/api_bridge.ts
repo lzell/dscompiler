@@ -12,14 +12,14 @@
 // from Figma's plugin types. The idea is that call sites can use a type
 // passed from Figma, or from one of our own creation that conforms to <FigmaType>Protocol
 // that we craft ourselves, which is helpful for testing.
-export interface PluginAPIProtocol {
-  getLocalPaintStyles(): PaintStyle[]
+export interface IPluginAPI {
+  getLocalPaintStyles(): IPaintStyle[]
 }
 
-export interface PaintStyleProtocol {
+export interface IPaintStyle {
    name: string
    description: string
-   paints: ReadonlyArray<PaintProtocol>
+   paints: ReadonlyArray<IPaint>
 }
 
 export interface RGBProtocol {
@@ -28,22 +28,22 @@ export interface RGBProtocol {
   readonly b: number
 }
 
-export interface SolidPaintProtocol {
+export interface ISolidPaint {
   readonly type: 'SOLID'
   readonly color: RGBProtocol
   readonly opacity?: number
 }
 
-export interface VideoPaintProtocol {
+export interface IVideoPaint {
   readonly type: 'VIDEO'
 }
 
-export interface ImagePaintProtocol {
+export interface IImagePaint {
   readonly type: 'IMAGE'
 }
 
-export interface GradientPaintProtocol {
+export interface IGradientPaint {
   readonly type: 'GRADIENT_LINEAR' | 'GRADIENT_RADIAL' | 'GRADIENT_ANGULAR' | 'GRADIENT_DIAMOND'
 }
 
-export declare type PaintProtocol = SolidPaintProtocol | GradientPaintProtocol | ImagePaintProtocol | VideoPaintProtocol
+export declare type IPaint = ISolidPaint | IGradientPaint | IImagePaint | IVideoPaint
