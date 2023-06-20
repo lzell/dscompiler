@@ -8,6 +8,7 @@
       "dom",
       "es6"
     ],
+    "moduleResolution": "nodenext",
     "noEmit": true,
     "noImplicitAny": true,
     "noUnusedLocals": true, // Turn this off when using repl
