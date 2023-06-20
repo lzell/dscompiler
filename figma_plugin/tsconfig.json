@@ -10,8 +10,9 @@
     ],
     "moduleResolution": "nodenext",
     "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true, // Turn this off when using repl
+    "noUnusedLocals": true,
     "skipLibCheck": true, // https://github.com/figma/plugin-typings/issues/96#issuecomment-982461389
     "strict": true,
     "target": "es6",
