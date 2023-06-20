@@ -9,7 +9,7 @@
     "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --target=es6 --outfile=dist/ui.js && node scripts/buildui.mjs",
     "linter": "npx eslint .",
     "linter_fixer": "npx eslint --fix .",
-    "repl": "npx ts-node -r tsconfig-paths/register",
+    "repl": "npx ts-node -r tsconfig-paths/register -O '{\"noUnusedLocals\": false}'",
     "test": "jest",
     "typecheck": "tsc --project tsconfig.json",
     "watch": "node scripts/watch.mjs",
