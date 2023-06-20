@@ -5,11 +5,11 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "npm run bundle_main && npm run bundle_ui",
-    "bundle_main": "./node_modules/.bin/esbuild src/main.ts --bundle --outfile=dist/main.js",
-    "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --outfile=dist/ui.js && node scripts/buildui.mjs",
+    "bundle_main": "./node_modules/.bin/esbuild src/main.ts --bundle --target=es6 --outfile=dist/main.js",
+    "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --target=es6 --outfile=dist/ui.js && node scripts/buildui.mjs",
     "linter": "npx eslint .",
     "linter_fixer": "npx eslint --fix .",
-    "repl": "npx ts-node -r tsconfig-paths/register",
+    "repl": "npx ts-node -r tsconfig-paths/register -O '{\"noUnusedLocals\": false}'",
     "test": "jest",
     "typecheck": "tsc --project tsconfig.json",
     "watch": "node scripts/watch.mjs",
@@ -34,6 +34,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@figma-plugin/helpers": "^0.15.2",
     "file-saver": "^2.0.5",
     "liquidjs": "^10.8.2",
     "lodash": "^4.17.21"

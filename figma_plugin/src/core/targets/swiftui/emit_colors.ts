@@ -1,7 +1,7 @@
-import { Color } from 'src/core/models/color.ts'
+import { NamedColor } from 'src/core/models/color.ts'
 
 // Given a color model, return an equivalent SwiftUI color definition.
-export function emitColor(color: Color, indentLevel = 0): string {
+export function emitColor(color: NamedColor, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   return [
     `${prefix}/// ${color.description}`,
@@ -10,7 +10,7 @@ export function emitColor(color: Color, indentLevel = 0): string {
 }
 
 // Given a list of colors, return an equivalent SwiftUI file defining all colors.
-export function emitColors(colors: ReadonlyArray<Color>): string {
+export function emitColors(colors: ReadonlyArray<NamedColor>): string {
   let swift_content = `import SwiftUI
 
 public extension Color {
@@ -23,8 +23,9 @@ public extension Color {
 `
   const indentLevel = 8
   for (const color of colors) {
-    swift_content += `${emitColor(color, indentLevel)}\n`
+    swift_content += `${emitColor(color, indentLevel)}\n\n`
   }
+  swift_content = swift_content.slice(0, -1)
 
   swift_content += "    }\n}\n"
   return swift_content
