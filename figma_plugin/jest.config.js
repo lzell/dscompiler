@@ -6,6 +6,9 @@ module.exports = {
     // There are no tests in the `src` tree.
     "./src",
   ],
+  "modulePaths": [
+    "<rootDir>",
+  ],
   "testMatch": [
     "**/?(*.)+(spec|test).+(ts|tsx|js)"
   ],
