@@ -50,8 +50,18 @@ export interface IImagePaint {
   readonly type: 'IMAGE'
 }
 
+export declare type ITransform = [[number, number, number], [number, number, number]]
+
+export interface IColorStop {
+  readonly position: number
+  readonly color: IRGBA
+}
+
 export interface IGradientPaint {
   readonly type: 'GRADIENT_LINEAR' | 'GRADIENT_RADIAL' | 'GRADIENT_ANGULAR' | 'GRADIENT_DIAMOND'
+  readonly gradientTransform: ITransform
+  readonly gradientStops: ReadonlyArray<IColorStop>
+  readonly opacity?: number
 }
 
 export declare type IPaint = ISolidPaint | IGradientPaint | IImagePaint | IVideoPaint
