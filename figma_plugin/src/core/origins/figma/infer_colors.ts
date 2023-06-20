@@ -15,7 +15,6 @@ function onlySolidPaintStyles(paintStyle: IPaintStyle): boolean {
   return hasPaints && paintStyle.paints[0].type === 'SOLID'
 }
 
-
 // Given Figma's 'plugin' global, returns an array of NamedColor models.
 // Every solid paint saved as a "local style" in Figma is mapped to a NamedColor.
 export function inferColors(figma: IPluginAPI): ReadonlyArray<NamedColor> {
@@ -23,7 +22,6 @@ export function inferColors(figma: IPluginAPI): ReadonlyArray<NamedColor> {
                  .filter(onlySolidPaintStyles)
                  .map(paintStyleToColor))
 }
-
 
 // Given a paint style consisting of a solid paint, return a NamedColor model.
 // The name of the paint style is camelCased to form the NamedColor model name.

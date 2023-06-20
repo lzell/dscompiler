@@ -2,7 +2,7 @@ import { NamedGradient } from 'src/core/models/gradient.ts'
 
 // Given a gradient model, return an equivalent SwiftUI gradient definition.
 export function emitGradient(gradient: NamedGradient, indentLevel = 0): string {
-  let prefix = ' '.repeat(indentLevel)
+  const prefix = ' '.repeat(indentLevel)
   let swift_content = `${prefix}/// ${gradient.description}\n`
   swift_content += `${prefix}public static let ${gradient.name} = LinearGradient(\n`
   swift_content += `${prefix}    stops: [\n`
@@ -28,7 +28,6 @@ public extension LinearGradient {
     /// At any call site that requires a linear gradient, type \`LinearGradient.DesignSystem.<esc>\`
     struct DesignSystem {
 `
-
   const indentLevel = 8
   for (const gradient of gradients) {
     swift_content += `${emitGradient(gradient, indentLevel)}\n\n`

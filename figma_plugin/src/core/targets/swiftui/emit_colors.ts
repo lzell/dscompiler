@@ -9,7 +9,6 @@ export function emitColor(color: NamedColor, indentLevel = 0): string {
   ].join("\n")
 }
 
-
 // Given a list of colors, return an equivalent SwiftUI file defining all colors.
 export function emitColors(colors: ReadonlyArray<NamedColor>): string {
   let swift_content = `import SwiftUI
@@ -22,7 +21,6 @@ public extension Color {
     /// At any call site that requires a color, type \`Color.DesignSystem.<esc>\`
     struct DesignSystem {
 `
-
   const indentLevel = 8
   for (const color of colors) {
     swift_content += `${emitColor(color, indentLevel)}\n\n`

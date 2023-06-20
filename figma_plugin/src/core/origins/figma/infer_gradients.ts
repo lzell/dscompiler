@@ -1,6 +1,6 @@
 import { camelCase } from 'lodash'
 import { compact } from 'lodash'
-import { extractLinearGradientParamsFromTransform } from "@figma-plugin/helpers";
+import { extractLinearGradientParamsFromTransform } from "@figma-plugin/helpers"
 
 // API bridge types
 import { IGradientPaint } from 'src/core/origins/figma/api_bridge.ts'
