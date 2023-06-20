@@ -5,8 +5,8 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "npm run bundle_main && npm run bundle_ui",
-    "bundle_main": "./node_modules/.bin/esbuild src/main.ts --bundle --outfile=dist/main.js",
-    "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --outfile=dist/ui.js && node scripts/buildui.mjs",
+    "bundle_main": "./node_modules/.bin/esbuild src/main.ts --bundle --target=es6 --outfile=dist/main.js",
+    "bundle_ui": "./node_modules/.bin/esbuild src/ui.ts --bundle --target=es6 --outfile=dist/ui.js && node scripts/buildui.mjs",
     "linter": "npx eslint .",
     "linter_fixer": "npx eslint --fix .",
     "repl": "npx ts-node -r tsconfig-paths/register",
