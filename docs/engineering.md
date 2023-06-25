@@ -57,21 +57,26 @@ Run tests on filesystem changes to `figma_plugin/src` and `figma_plugin/test`:
 
 ### How to debug tests
 
-1. Open devtools:
-  - Open Chrome
-  - Punch `about:inspect` into the address bar
-  - Tap on 'Open dedicated DevTools for Node'
+Inside the repl:
 
-2. Add a `debugger` statement to the source
+    node inspect node_modules/.bin/jest <filename>
 
-3. Run `jest` with the following:
+Inside devtools:
 
-    node --inspect-brk node_modules/.bin/jest --runInBand
+    1. Open devtools:
+      - Open Chrome
+      - Punch `about:inspect` into the address bar
+      - Tap on 'Open dedicated DevTools for Node'
 
-  To test a single file, use:
+    2. Add a `debugger` statement to the source
 
-    node --inspect-brk node_modules/.bin/jest --runInBand <filename>
+    3. Run `jest` with the following:
 
+        node --inspect-brk node_modules/.bin/jest --runInBand
+
+      To test a single file, use:
+
+        node --inspect-brk node_modules/.bin/jest --runInBand <filename>
 
 ### How to run the linter
 

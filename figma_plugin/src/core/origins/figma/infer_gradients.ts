@@ -1,4 +1,3 @@
-import { camelCase } from 'lodash'
 import { compact } from 'lodash'
 import { extractLinearGradientParamsFromTransform } from "@figma-plugin/helpers"
 
@@ -14,6 +13,8 @@ import { LinearGradient } from 'src/core/models/gradient.ts'
 import { NamedGradient } from 'src/core/models/gradient.ts'
 import { Point } from 'src/core/models/point.ts'
 import { logToUser } from 'src/core/utils/log.ts'
+import { sanitizeName } from 'src/core/utils/common.ts'
+import { humanifyNumber } from 'src/core/utils/common.ts'
 
 function onlyLinearGradientPaintStyles(paintStyle: IPaintStyle): boolean {
   const hasPaints = paintStyle.paints.length >= 1
@@ -38,7 +39,7 @@ export function paintStyleToLinearGradient(paintStyle: IPaintStyle): NamedGradie
     logToUser("DSCompiler expects gradient opacities to be applied to color stops, not the overall gradient")
   }
   const gradient = gradientPaintToLinearGradient(paint)
-  const named = {name: camelCase(paintStyle.name), description: paintStyle.description}
+  const named = {name: sanitizeName(paintStyle.name), description: paintStyle.description}
   return { ...named, ...gradient }
 }
 
@@ -48,7 +49,7 @@ function gradientPaintToLinearGradient(gradientPaint: IGradientPaint): LinearGra
   const stops: GradientStop[] = gradientPaint.gradientStops.map(stop => {
     return {
       color: { red: stop.color.r, green: stop.color.g, blue: stop.color.b, opacity: stop.color.a },
-      location: stop.position
+      location: humanifyNumber(stop.position)
     }
   })
   return {
@@ -59,5 +60,5 @@ function gradientPaintToLinearGradient(gradientPaint: IGradientPaint): LinearGra
 
 export function transformToModelCoordinates(transform: ITransform): {startPoint: Point, endPoint: Point} {
   const tmp = extractLinearGradientParamsFromTransform(1, 1, transform)
-  return { startPoint: {x: tmp.start[0], y: tmp.start[1]}, endPoint: {x:tmp.end[0], y: tmp.end[1]} }
+  return { startPoint: {x: humanifyNumber(tmp.start[0]), y: humanifyNumber(tmp.start[1])}, endPoint: {x: humanifyNumber(tmp.end[0]), y: humanifyNumber(tmp.end[1])} }
 }
