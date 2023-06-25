@@ -37,6 +37,7 @@
     "@figma-plugin/helpers": "^0.15.2",
     "file-saver": "^2.0.5",
     "liquidjs": "^10.8.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "num-words": "^1.2.3"
   }
 }
