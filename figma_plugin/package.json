@@ -18,7 +18,7 @@
   "author": "",
   "license": "",
   "devDependencies": {
-    "@figma/plugin-typings": "^1.65.0",
+    "@figma/plugin-typings": "^1.68.0",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^29.5.1",
     "@types/lodash": "^4.14.194",
