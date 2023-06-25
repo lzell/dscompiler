@@ -1,11 +1,12 @@
 import { NamedColor } from 'src/core/models/color.ts'
+import { escapeSwiftToken } from 'src/core/utils/common.ts'
 
 // Given a color model, return an equivalent SwiftUI color definition.
 export function emitColor(color: NamedColor, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   return [
     `${prefix}/// ${color.description}`,
-    `${prefix}public static let ${color.name} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})`
+    `${prefix}public static let ${escapeSwiftToken(color.name)} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})`
   ].join("\n")
 }
 
