@@ -30,10 +30,7 @@ export function humanifyNumber(value: number): number {
   const integer = Math.trunc(absValue)
   const r = absValue - integer
   if (r < 0.001) {
-    if (integer == -0) {
-      return 0
-    }
-    return sign * integer
+    return integer === 0 ? 0 : sign * integer
   } else if (r > 0.999) {
     return sign * (integer + 1)
   }

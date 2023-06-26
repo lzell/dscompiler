@@ -1,10 +1,25 @@
 import { IColorStop } from '../src/core/origins/figma/api_bridge.ts'
+import { IEffectStyle } from '../src/core/origins/figma/api_bridge.ts'
 import { IGradientPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { IPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { IPaintStyle } from '../src/core/origins/figma/api_bridge.ts'
+import { IPluginAPI } from '../src/core/origins/figma/api_bridge.ts'
 import { ISolidPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { ITransform } from '../src/core/origins/figma/api_bridge.ts'
 
+
+interface _IPluginAPI {
+  getLocalPaintStyles?: () => IPaintStyle[]
+  getLocalEffectStyles?: () => IEffectStyle[]
+}
+
+export function makePluginAPI({ getLocalPaintStyles, getLocalEffectStyles }: _IPluginAPI = {})
+: IPluginAPI {
+  return {
+    getLocalPaintStyles: getLocalPaintStyles || jest.fn(() => { return Array<IPaintStyle>() }),
+    getLocalEffectStyles: getLocalEffectStyles || jest.fn(() => { return Array<IEffectStyle>() }),
+  }
+}
 
 interface _IPaintStyle {
   name?: string

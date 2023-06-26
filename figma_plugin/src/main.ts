@@ -1,6 +1,8 @@
 import { emitColors } from 'src/core/targets/swiftui/emit_colors.ts'
+import { emitCompositeEffects } from 'src/core/targets/swiftui/emit_effects.ts'
 import { emitGradients } from 'src/core/targets/swiftui/emit_gradients.ts'
 import { inferColors } from 'src/core/origins/figma/infer_colors.ts'
+import { inferEffects } from 'src/core/origins/figma/infer_effects.ts'
 import { inferGradients } from 'src/core/origins/figma/infer_gradients.ts'
 
 figma.showUI(__html__)
@@ -31,9 +33,23 @@ function returnSwiftUIGradients() {
   )
 }
 
+// Returns SwiftUI effects to the caller (the browser environment)
+function returnSwiftUIEffects() {
+  figma.ui.postMessage(
+    {
+      'message': 'return-export-effects-button-action',
+      'argument': {
+        'file_name': 'Effect.swift',
+        'file_body': emitCompositeEffects(inferEffects(figma)),
+      }
+    }
+  )
+}
+
 const messageCallDictionary: Record<string, () => void> = {
   'close-button-action': figma.closePlugin,
   'export-colors-button-action': returnSwiftUIColors,
+  'export-effects-button-action': returnSwiftUIEffects,
   'export-gradients-button-action': returnSwiftUIGradients,
 }
 

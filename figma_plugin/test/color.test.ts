@@ -13,10 +13,11 @@ import { paintStyleToColor } from '../src/core/origins/figma/infer_colors.ts'
 
 // Specific to testing
 import { makePaintStyle } from './factories.ts'
+import { makePluginAPI } from './factories.ts'
 
 test("Infering colors from Figma uses the plugin API call getLocalPaintStyles", () => {
   const getLocalPaintStyles = jest.fn(() => { return Array<IPaintStyle>() })
-  const figma = { getLocalPaintStyles: getLocalPaintStyles }
+  const figma = makePluginAPI({ getLocalPaintStyles: getLocalPaintStyles })
   inferColors(figma)
   expect(getLocalPaintStyles).toHaveBeenCalled()
 })
@@ -27,7 +28,7 @@ test("Image paints and video paints are ignored", () => {
 
   const paintStyle = makePaintStyle({paints: [imagePaint, videoPaint]})
   const getLocalPaintStyles = jest.fn(() => { return [paintStyle] })
-  const figma = { getLocalPaintStyles: getLocalPaintStyles }
+  const figma = makePluginAPI({ getLocalPaintStyles: getLocalPaintStyles })
   expect(inferColors(figma)).toEqual([])
 })
 

@@ -14,8 +14,9 @@ import { transformToModelCoordinates } from '../src/core/origins/figma/infer_gra
 import { logToUser } from '../src/core/utils/log.ts'
 
 // Specific to testing
-import { makePaintStyle } from './factories.ts'
 import { makeGradientPaint } from './factories.ts'
+import { makePaintStyle } from './factories.ts'
+import { makePluginAPI } from './factories.ts'
 
 // Don't actually log to the user.
 // Instead, inspect a mock and ensure the right message is being sent.
@@ -26,7 +27,7 @@ afterEach(() => { jest.restoreAllMocks() })
 
 test("Infering gradients from Figma uses the plugin API call getLocalPaintStyles", () => {
   const getLocalPaintStyles = jest.fn(() => { return Array<IPaintStyle>() })
-  const figma = { getLocalPaintStyles: getLocalPaintStyles }
+  const figma = makePluginAPI({ getLocalPaintStyles: getLocalPaintStyles })
   inferGradients(figma)
   expect(getLocalPaintStyles).toHaveBeenCalled()
 })
