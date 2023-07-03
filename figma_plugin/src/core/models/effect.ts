@@ -13,6 +13,7 @@ export type Shadow = {
   color: Color
   radius: number
   offset: { x: number, y: number }
+  spread: number | null
 }
 
 export type Blur = {

@@ -28,7 +28,7 @@ function effectStyleToCompositeEffect(effectStyle: IEffectStyle): NamedComposite
   }
 }
 
-function effectToDSEffect(effect: IEffect): DSEffect | null {
+export function effectToDSEffect(effect: IEffect): DSEffect | null {
   if (effect.type == 'LAYER_BLUR') {
     return { radius: effect.radius }
   } else if (effect.type == 'DROP_SHADOW') {
@@ -41,8 +41,9 @@ function effectToDSEffect(effect: IEffect): DSEffect | null {
       },
       radius: effect.radius,
       offset: effect.offset,
+      spread: effect.spread ?? null,
     }
   }
-  logToUser(`dscompiler does not yet understand effect type ${effect.type}`)
+  logToUser(`DSCompiler does not yet understand effect type ${effect.type}`)
   return null
 }

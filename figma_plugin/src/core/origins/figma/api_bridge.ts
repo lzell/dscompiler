@@ -77,7 +77,7 @@ export interface IEffectStyle {
 
 export declare type IEffect = IDropShadowEffect | IInnerShadowEffect | IBlurEffect
 
-interface IDropShadowEffect {
+export interface IDropShadowEffect {
   readonly type: 'DROP_SHADOW'
   readonly color: IRGBA
   readonly offset: {x: number, y: number}
@@ -85,11 +85,11 @@ interface IDropShadowEffect {
   readonly spread?: number
 }
 
-interface IInnerShadowEffect {
+export interface IInnerShadowEffect {
   readonly type: 'INNER_SHADOW'
 }
 
-interface IBlurEffect {
+export interface IBlurEffect {
   readonly type: 'LAYER_BLUR' | 'BACKGROUND_BLUR'
   readonly radius: number
 }
