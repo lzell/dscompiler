@@ -31,7 +31,14 @@ function effectStyleToCompositeEffect(effectStyle: IEffectStyle): NamedComposite
 export function effectToDSEffect(effect: IEffect): DSEffect | null {
   if (effect.type == 'LAYER_BLUR') {
     return { radius: effect.radius }
-  } else if (effect.type == 'DROP_SHADOW') {
+  }
+
+  if (effect.type == 'DROP_SHADOW') {
+    if (effect.spread != null && effect.spread != 0) {
+      logToUser(`DSCompiler can not yet emit code for drop shadows with spreads. Please see https://github.com/lzell/dscompiler/issues/10`)
+      return null
+    }
+
     return {
       color: {
         red: effect.color.r,
@@ -39,11 +46,11 @@ export function effectToDSEffect(effect: IEffect): DSEffect | null {
         blue: effect.color.b,
         opacity: effect.color.a,
       },
-      radius: effect.radius,
+      radius: effect.radius / 2,  // Apply correction to Figma's radius so that generated SwiftUI is visually equal to the defined effect in Figma
       offset: effect.offset,
-      spread: effect.spread ?? null,
     }
   }
+
   logToUser(`DSCompiler does not yet understand effect type ${effect.type}`)
   return null
 }

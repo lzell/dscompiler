@@ -1,5 +1,4 @@
 // API bridge types
-import { IEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IEffectStyle } from '../src/core/origins/figma/api_bridge.ts'
 
 // DSCompiler
@@ -8,6 +7,8 @@ import { NamedCompositeEffect } from '../src/core/models/effect.ts'
 import { Shadow } from '../src/core/models/effect.ts'
 import { effectToDSEffect } from '../src/core/origins/figma/infer_effects.ts'
 import { emitEffect } from '../src/core/targets/swiftui/emit_effects.ts'
+import { emitCompositeEffect } from '../src/core/targets/swiftui/emit_effects.ts'
+import { emitCompositeEffects } from '../src/core/targets/swiftui/emit_effects.ts'
 import { inferEffects } from '../src/core/origins/figma/infer_effects.ts'
 import { logToUser } from '../src/core/utils/log.ts'
 
@@ -33,20 +34,6 @@ test("Inferring effects from Figma uses the plugin API call getLocalEffectsStyle
   expect(getLocalEffectStyles).toHaveBeenCalled()
 })
 
-test("If an effect style contains an inner shadow, we alert the user", () => {
-  const style = makeEffectStyle({effects: [makeInnerShadowEffect()]})
-  const figma = makePluginAPI({ getLocalEffectStyles: () => { return [style] } })
-  inferEffects(figma)
-  expect(logToUser).toBeCalledWith('DSCompiler does not yet understand effect type INNER_SHADOW')
-})
-
-test("If an effect style has a background blur, we alert the user", () => {
-  const style = makeEffectStyle({effects: [makeBackgroundBlurEffect()]})
-  const figma = makePluginAPI({ getLocalEffectStyles: () => { return [style] } })
-  inferEffects(figma)
-  expect(logToUser).toBeCalledWith('DSCompiler does not yet understand effect type BACKGROUND_BLUR')
-})
-
 test("A layer blur figma effect is converted into a Blur model", () => {
   const figmaEffect = makeLayerBlurEffect({radius: 1})
   const blurModel = effectToDSEffect(figmaEffect)
@@ -58,22 +45,12 @@ test("A drop shadow figma effect is converted into a Shadow model", () => {
     color: {r: 1, g: 0, b: 0, a: 1},
     offset: {x: 9, y: 9},
     radius: 1,
-    spread: 5
   })
   const shadowModel = effectToDSEffect(figmaEffect)
   expect(shadowModel).toMatchObject({
     color: {red: 1, green: 0, blue: 0, opacity: 1},
-    radius: 1,
+    radius: 0.5,
     offset: {x: 9, y: 9},
-    spread: 5
-  })
-})
-
-test("A drop shadow without a spread defaults to a null spread", () => {
-  const figmaEffect = makeDropShadowEffect()
-  const shadowModel = effectToDSEffect(figmaEffect)
-  expect(shadowModel).toMatchObject({
-    spread: null
   })
 })
 
@@ -86,7 +63,6 @@ test("An effect style maps to a composite effect model", () => {
           color: {r: 1, g: 0, b: 0, a: 1},
           offset: {x: 1, y: 1},
           radius: 1,
-          spread: 1
         }),
         makeLayerBlurEffect({
           radius: 2
@@ -103,8 +79,7 @@ test("An effect style maps to a composite effect model", () => {
       {
         color: {red: 1, green: 0, blue: 0, opacity: 1},
         offset: {x: 1, y: 1},
-        radius: 1,
-        spread: 1
+        radius: 0.5,
       },
       {
         radius: 2
@@ -119,17 +94,171 @@ test("A blur model has corresponding SwiftUI", () => {
   expect(swiftUI).toBe(".blur(radius: 5)\n")
 })
 
-test("A drop shadow model without spread has corresponding SwiftUI", () => {
+test("A drop shadow model has corresponding SwiftUI", () => {
   const shadow: Shadow = {
     color: { red: 1, green: 0, blue: 0, opacity: 1},
     radius: 5,
     offset: {x: 1, y: 1},
-    spread: null
   }
   const swiftUI = emitEffect(shadow)
   expect(swiftUI).toBe(".shadow(color: Color(red:1, green: 0, blue: 0, opacity: 1), radius: 5, x: 1, y:1)\n")
 })
 
-// This will fail. There is no spread logic yet.
-// test("A drop shadow with spread has corresponding SwiftUI", () => {
-// }
+test("A named blur effect has corresponding SwiftUI", () => {
+  const namedEffect: NamedCompositeEffect = {
+    name: "myBlur",
+    description: "Use this blur to...",
+    effects: [
+      { radius: 2 },
+    ]
+  }
+  const emittedSwiftUI = emitCompositeEffect(namedEffect)
+  expect(emittedSwiftUI).toBe(
+`/// Use this blur to...
+public struct MyBlur: ViewModifier {
+    public func body(content: Content) -> some View {
+        return content
+            .blur(radius: 2)
+    }
+    public init() {}
+}
+`)
+})
+
+test("A named shadow effect has corresponding SwiftUI", () => {
+  const namedEffect: NamedCompositeEffect = {
+    name: "myShadow",
+    description: "Use this shadow to...",
+    effects: [
+      {
+        color: { red: 1, green: 0, blue: 0, opacity: 1 },
+        radius: 2,
+        offset: { x: 1, y: 1 },
+      },
+    ]
+  }
+  const emittedSwiftUI = emitCompositeEffect(namedEffect)
+  expect(emittedSwiftUI).toBe(
+`/// Use this shadow to...
+public struct MyShadow: ViewModifier {
+    public func body(content: Content) -> some View {
+        return content
+            .shadow(color: Color(red:1, green: 0, blue: 0, opacity: 1), radius: 2, x: 1, y:1)
+    }
+    public init() {}
+}
+`)
+})
+
+test("A composite effect with multiple shadows has corresponding SwiftUI", () => {
+  const namedEffect: NamedCompositeEffect = {
+    name: "myShadow",
+    description: "Use this shadow to...",
+    effects: [
+      {
+        color: { red: 1, green: 0, blue: 0, opacity: 1 },
+        radius: 2,
+        offset: { x: 0, y: 2 },
+      },
+      {
+        color: { red: 0, green: 0, blue: 1, opacity: 1 },
+        radius: 2,
+        offset: { x: 2, y: 0 },
+      },
+    ]
+  }
+  const emittedSwiftUI = emitCompositeEffect(namedEffect)
+  expect(emittedSwiftUI).toBe(
+`/// Use this shadow to...
+public struct MyShadow: ViewModifier {
+    public func body(content: Content) -> some View {
+        return content
+            .shadow(color: Color(red:1, green: 0, blue: 0, opacity: 1), radius: 2, x: 0, y:2)
+            .shadow(color: Color(red:0, green: 0, blue: 1, opacity: 1), radius: 2, x: 2, y:0)
+    }
+    public init() {}
+}
+`)
+})
+
+
+test("Multiple models have a swiftUI file equivalent", () => {
+  const blur: NamedCompositeEffect = {
+    name: "myBlur",
+    description: "Use this blur to...",
+    effects: [
+      { radius: 2 },
+    ]
+  }
+
+  const shadow: NamedCompositeEffect = {
+    name: "myShadow",
+    description: "Use this shadow to...",
+    effects: [
+      {
+        color: { red: 1, green: 0, blue: 0, opacity: 1},
+        radius: 5,
+        offset: {x: 1, y: 1},
+      }
+    ]
+  }
+
+  const emittedSwiftUI = emitCompositeEffects([blur, shadow])
+  expect(emittedSwiftUI).toBe(`import SwiftUI
+
+public struct Effect {
+    /// Xcode's autocomplete allows for easy discovery of design system effects.
+    /// At any call site that requires an effect, type \`Effect.DesignSystem.<ctrl-space>\`
+    public struct DesignSystem {
+
+        /// Use this blur to...
+        public struct MyBlur: ViewModifier {
+            public func body(content: Content) -> some View {
+                return content
+                    .blur(radius: 2)
+            }
+            public init() {}
+        }
+
+        /// Use this shadow to...
+        public struct MyShadow: ViewModifier {
+            public func body(content: Content) -> some View {
+                return content
+                    .shadow(color: Color(red:1, green: 0, blue: 0, opacity: 1), radius: 5, x: 1, y:1)
+            }
+            public init() {}
+        }
+    }
+}
+
+public extension View {
+    func myBlur() -> some View {modifier(Effect.DesignSystem.MyBlur())}
+    func myShadow() -> some View {modifier(Effect.DesignSystem.MyShadow())}
+}
+`)
+})
+
+// Add support: https://github.com/lzell/dscompiler/issues/8
+test("If an effect style contains an inner shadow, we alert the user", () => {
+  const style = makeEffectStyle({effects: [makeInnerShadowEffect()]})
+  const figma = makePluginAPI({ getLocalEffectStyles: () => { return [style] } })
+  inferEffects(figma)
+  expect(logToUser).toBeCalledWith('DSCompiler does not yet understand effect type INNER_SHADOW')
+})
+
+// Add support: https://github.com/lzell/dscompiler/issues/9
+test("If an effect style has a background blur, we alert the user", () => {
+  const style = makeEffectStyle({effects: [makeBackgroundBlurEffect()]})
+  const figma = makePluginAPI({ getLocalEffectStyles: () => { return [style] } })
+  inferEffects(figma)
+  expect(logToUser).toBeCalledWith('DSCompiler does not yet understand effect type BACKGROUND_BLUR')
+})
+
+// Add support: https://github.com/lzell/dscompiler/issues/10
+test("If a shadow effect has a spread, we alert the user", () => {
+  const style = makeEffectStyle({effects: [makeDropShadowEffect({ spread: 5 })]})
+  const figma = makePluginAPI({ getLocalEffectStyles: () => { return [style] } })
+  inferEffects(figma)
+  expect(logToUser).toBeCalledWith('DSCompiler can not yet emit code for drop shadows with spreads. Please see https://github.com/lzell/dscompiler/issues/10')
+})
+

@@ -157,7 +157,7 @@ public extension LinearGradient {
     /// SwiftUI's LinearGradient.
     ///
     /// Xcode's autocomplete allows for easy discovery of design system linear gradients.
-    /// At any call site that requires a linear gradient, type \`LinearGradient.DesignSystem.<esc>\`
+    /// At any call site that requires a linear gradient, type \`LinearGradient.DesignSystem.<ctrl-space>\`
     struct DesignSystem {
         /// My first docstring
         public static let gradientA = LinearGradient(

@@ -19,7 +19,7 @@ public extension Color {
     /// SwiftUI's Color.
     ///
     /// Xcode's autocomplete allows for easy discovery of design system colors.
-    /// At any call site that requires a color, type \`Color.DesignSystem.<esc>\`
+    /// At any call site that requires a color, type \`Color.DesignSystem.<ctrl-space>\`
     struct DesignSystem {
 `
   const indentLevel = 8

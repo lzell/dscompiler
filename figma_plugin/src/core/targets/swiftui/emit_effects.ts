@@ -2,7 +2,7 @@ import { upperFirst } from 'lodash'
 import { DSEffect } from 'src/core/models/effect.ts'
 import { NamedCompositeEffect } from 'src/core/models/effect.ts'
 
-export function emitEffect(effect: DSEffect, indentLevel: number = 0 ): string {
+export function emitEffect(effect: DSEffect, indentLevel = 0 ): string {
   const prefix = ' '.repeat(indentLevel)
   const isShadow = "color" in effect
   if (isShadow) {
@@ -13,7 +13,7 @@ export function emitEffect(effect: DSEffect, indentLevel: number = 0 ): string {
 }
 
 // Given a composite effect model, return an equivalent SwiftUI modifier definition.
-export function emitCompositeEffect(compositeEffect: NamedCompositeEffect, indentLevel: number = 0): string {
+export function emitCompositeEffect(compositeEffect: NamedCompositeEffect, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   let swift_content = `${prefix}/// ${compositeEffect.description}\n`
   swift_content += `${prefix}public struct ${upperFirst(compositeEffect.name)}: ViewModifier {\n`
@@ -24,7 +24,7 @@ export function emitCompositeEffect(compositeEffect: NamedCompositeEffect, inden
   }
   swift_content += `${prefix}    }\n`
   swift_content += `${prefix}    public init() {}\n`
-  swift_content += `${prefix}}\n\n`
+  swift_content += `${prefix}}\n`
   return swift_content
 }
 
@@ -34,13 +34,14 @@ export function emitCompositeEffects(compositeEffects: ReadonlyArray<NamedCompos
 
 public struct Effect {
     /// Xcode's autocomplete allows for easy discovery of design system effects.
-    /// At any call site that requires an effect, type \`Effect.DesignSystem.<esc>\`
+    /// At any call site that requires an effect, type \`Effect.DesignSystem.<ctrl-space>\`
     public struct DesignSystem {
 
 `
     for (const compositeEffect of compositeEffects) {
-      swift_content += emitCompositeEffect(compositeEffect, 8)
+      swift_content += emitCompositeEffect(compositeEffect, 8) + "\n"
     }
+    swift_content = swift_content.slice(0, -1)
 
     swift_content += "    }\n}\n\n"
     swift_content += "public extension View {\n"
