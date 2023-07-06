@@ -4,9 +4,11 @@
 //   node_modules/@figma/plugin-typings/index.d.ts
 //   node_modules/@figma/plugin-typings/plugin-api.d.ts
 //
-// We duplicate parts of the API definition for dependency isolation.
-// Source code under `src/core` can run outside of Figma's plugin environment (e.g. in tests).
-// It also serves as a reference to quickly see which parts of the plugin API we use.
+// We duplicate parts of the API definition to:
+//   1. Isolate dependencies. Source code under `src/core` can run outside of Figma's plugin environment (e.g. in tests).
+//   2. Serve as a reference to quickly see which parts of the plugin API we use.
+//   3. Serve as a static check to ensure the figma API doesn't change out from under us.
+//      If this were to happen, typechecking `/test` would work fine, but typechecking `/src` would fail.
 //
 // Type names have `I` prepended to them to distinguish them from
 // from Figma's plugin types. The idea is that call sites can use a type
@@ -18,6 +20,7 @@
 // (which would include many members and methods that we do not use).
 export interface IPluginAPI {
   getLocalPaintStyles(): IPaintStyle[]
+  getLocalEffectStyles(): IEffectStyle[]
 }
 
 export interface IPaintStyle {
@@ -65,3 +68,28 @@ export interface IGradientPaint {
 }
 
 export declare type IPaint = ISolidPaint | IGradientPaint | IImagePaint | IVideoPaint
+
+export interface IEffectStyle {
+  name: string
+  description: string
+  effects: ReadonlyArray<IEffect>
+}
+
+export declare type IEffect = IDropShadowEffect | IInnerShadowEffect | IBlurEffect
+
+export interface IDropShadowEffect {
+  readonly type: 'DROP_SHADOW'
+  readonly color: IRGBA
+  readonly offset: {x: number, y: number}
+  readonly radius: number
+  readonly spread?: number
+}
+
+export interface IInnerShadowEffect {
+  readonly type: 'INNER_SHADOW'
+}
+
+export interface IBlurEffect {
+  readonly type: 'LAYER_BLUR' | 'BACKGROUND_BLUR'
+  readonly radius: number
+}

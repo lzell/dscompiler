@@ -12,6 +12,7 @@ window.onmessage = async (event) => {
   switch (pluginMessage['message']) {
     case 'return-export-colors-button-action':
     case 'return-export-gradients-button-action':
+    case 'return-export-effects-button-action':
       exportButtonActionDidReturn(pluginMessage['argument'])
       break
     default:
@@ -56,4 +57,5 @@ attachButtonActions([
   ['close-button', 'close-button-action'],
   ['export-colors-button', 'export-colors-button-action'],
   ['export-gradients-button', 'export-gradients-button-action'],
+  ['export-effects-button', 'export-effects-button-action'],
 ])

@@ -1,10 +1,11 @@
 import { NamedGradient } from 'src/core/models/gradient.ts'
+import { escapeSwiftToken } from 'src/core/utils/common.ts'
 
 // Given a gradient model, return an equivalent SwiftUI gradient definition.
 export function emitGradient(gradient: NamedGradient, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   let swift_content = `${prefix}/// ${gradient.description}\n`
-  swift_content += `${prefix}public static let ${gradient.name} = LinearGradient(\n`
+  swift_content += `${prefix}public static let ${escapeSwiftToken(gradient.name)} = LinearGradient(\n`
   swift_content += `${prefix}    stops: [\n`
   gradient.stops.forEach(stop => {
     swift_content += `${prefix}        Gradient.Stop(color: Color(red: ${stop.color.red}, green: ${stop.color.green}, blue: ${stop.color.blue}, opacity: ${stop.color.opacity ?? 1}), location: ${stop.location}),\n`
@@ -25,7 +26,7 @@ public extension LinearGradient {
     /// SwiftUI's LinearGradient.
     ///
     /// Xcode's autocomplete allows for easy discovery of design system linear gradients.
-    /// At any call site that requires a linear gradient, type \`LinearGradient.DesignSystem.<esc>\`
+    /// At any call site that requires a linear gradient, type \`LinearGradient.DesignSystem.<ctrl-space>\`
     struct DesignSystem {
 `
   const indentLevel = 8

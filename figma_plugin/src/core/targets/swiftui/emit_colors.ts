@@ -1,11 +1,12 @@
 import { NamedColor } from 'src/core/models/color.ts'
+import { escapeSwiftToken } from 'src/core/utils/common.ts'
 
 // Given a color model, return an equivalent SwiftUI color definition.
 export function emitColor(color: NamedColor, indentLevel = 0): string {
   const prefix = ' '.repeat(indentLevel)
   return [
     `${prefix}/// ${color.description}`,
-    `${prefix}public static let ${color.name} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})`
+    `${prefix}public static let ${escapeSwiftToken(color.name)} = Color(red: ${color.red}, green: ${color.green}, blue: ${color.blue}, opacity: ${color.opacity})`
   ].join("\n")
 }
 
@@ -18,7 +19,7 @@ public extension Color {
     /// SwiftUI's Color.
     ///
     /// Xcode's autocomplete allows for easy discovery of design system colors.
-    /// At any call site that requires a color, type \`Color.DesignSystem.<esc>\`
+    /// At any call site that requires a color, type \`Color.DesignSystem.<ctrl-space>\`
     struct DesignSystem {
 `
   const indentLevel = 8
