@@ -37,7 +37,7 @@ test("Inferring effects from Figma uses the plugin API call getLocalEffectsStyle
 test("A layer blur figma effect is converted into a Blur model", () => {
   const figmaEffect = makeLayerBlurEffect({radius: 1})
   const blurModel = effectToDSEffect(figmaEffect)
-  expect(blurModel).toMatchObject({radius: 1})
+  expect(blurModel).toMatchObject({radius: 0.5}) // The radius is corrected by a factor of 1/2 for visual consistency between Figma and SwiftUI
 })
 
 test("A drop shadow figma effect is converted into a Shadow model", () => {
@@ -82,7 +82,7 @@ test("An effect style maps to a composite effect model", () => {
         radius: 0.5,
       },
       {
-        radius: 2
+        radius: 1
       }
     ]
   })

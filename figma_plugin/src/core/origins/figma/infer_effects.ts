@@ -30,7 +30,7 @@ function effectStyleToCompositeEffect(effectStyle: IEffectStyle): NamedComposite
 
 export function effectToDSEffect(effect: IEffect): DSEffect | null {
   if (effect.type == 'LAYER_BLUR') {
-    return { radius: effect.radius }
+    return { radius: effect.radius / 2 }
   }
 
   if (effect.type == 'DROP_SHADOW') {
