@@ -11,7 +11,7 @@ export function emitFont(font: Font, indentLevel=0): string {
 }
 
 // Given a list of fonts, return an equivalent SwiftUI file defining all fonts.
-export function emitFonts(fonts: Font[]): string {
+export function emitFonts(fonts: ReadonlyArray<Font>): string {
   let swift_content = `import SwiftUI
 
 public extension Font {

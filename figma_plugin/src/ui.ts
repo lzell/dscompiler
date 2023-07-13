@@ -11,8 +11,9 @@ window.onmessage = async (event) => {
   console.assert(pluginMessage, "Expecting a plugin message")
   switch (pluginMessage['message']) {
     case 'return-export-colors-button-action':
-    case 'return-export-gradients-button-action':
     case 'return-export-effects-button-action':
+    case 'return-export-fonts-button-action':
+    case 'return-export-gradients-button-action':
       exportButtonActionDidReturn(pluginMessage['argument'])
       break
     default:
@@ -56,6 +57,7 @@ function attachButtonActions(buttonsAndActions: [string, string][]) {
 attachButtonActions([
   ['close-button', 'close-button-action'],
   ['export-colors-button', 'export-colors-button-action'],
-  ['export-gradients-button', 'export-gradients-button-action'],
   ['export-effects-button', 'export-effects-button-action'],
+  ['export-fonts-button', 'export-fonts-button-action'],
+  ['export-gradients-button', 'export-gradients-button-action'],
 ])
