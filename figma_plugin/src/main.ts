@@ -1,8 +1,10 @@
 import { emitColors } from 'src/core/targets/swiftui/emit_colors.ts'
 import { emitCompositeEffects } from 'src/core/targets/swiftui/emit_effects.ts'
+import { emitFonts } from 'src/core/targets/swiftui/emit_fonts.ts'
 import { emitGradients } from 'src/core/targets/swiftui/emit_gradients.ts'
 import { inferColors } from 'src/core/origins/figma/infer_colors.ts'
 import { inferEffects } from 'src/core/origins/figma/infer_effects.ts'
+import { inferFonts } from 'src/core/origins/figma/infer_fonts.ts'
 import { inferGradients } from 'src/core/origins/figma/infer_gradients.ts'
 
 figma.showUI(__html__)
@@ -46,10 +48,24 @@ function returnSwiftUIEffects() {
   )
 }
 
+// Returns SwiftUI fonts to the caller (the browser environment)
+function returnSwiftUIFonts() {
+  figma.ui.postMessage(
+    {
+      'message': 'return-export-fonts-button-action',
+      'argument': {
+        'file_name': 'Font.swift',
+        'file_body': emitFonts(inferFonts(figma)),
+      }
+    }
+  )
+}
+
 const messageCallDictionary: Record<string, () => void> = {
   'close-button-action': figma.closePlugin,
   'export-colors-button-action': returnSwiftUIColors,
   'export-effects-button-action': returnSwiftUIEffects,
+  'export-fonts-button-action': returnSwiftUIFonts,
   'export-gradients-button-action': returnSwiftUIGradients,
 }
 

@@ -21,6 +21,7 @@
 export interface IPluginAPI {
   getLocalPaintStyles(): IPaintStyle[]
   getLocalEffectStyles(): IEffectStyle[]
+  getLocalTextStyles(): ITextStyle[]
 }
 
 export interface IPaintStyle {
@@ -92,4 +93,16 @@ export interface IInnerShadowEffect {
 export interface IBlurEffect {
   readonly type: 'LAYER_BLUR' | 'BACKGROUND_BLUR'
   readonly radius: number
+}
+
+export interface ITextStyle {
+  name: string
+  description: string
+  fontSize: number
+  fontName: IFontName
+}
+
+export interface IFontName {
+  readonly family: string
+  readonly style: string
 }

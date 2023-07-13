@@ -1,7 +1,9 @@
+import { IBlurEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IColorStop } from '../src/core/origins/figma/api_bridge.ts'
 import { IDropShadowEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IEffectStyle } from '../src/core/origins/figma/api_bridge.ts'
+import { IFontName } from '../src/core/origins/figma/api_bridge.ts'
 import { IGradientPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { IInnerShadowEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IPaint } from '../src/core/origins/figma/api_bridge.ts'
@@ -9,20 +11,25 @@ import { IPaintStyle } from '../src/core/origins/figma/api_bridge.ts'
 import { IPluginAPI } from '../src/core/origins/figma/api_bridge.ts'
 import { IRGBA } from '../src/core/origins/figma/api_bridge.ts'
 import { ISolidPaint } from '../src/core/origins/figma/api_bridge.ts'
-import { IBlurEffect } from '../src/core/origins/figma/api_bridge.ts'
+import { ITextStyle } from '../src/core/origins/figma/api_bridge.ts'
 import { ITransform } from '../src/core/origins/figma/api_bridge.ts'
 
 /* Plugin API Factory */
 interface _IPluginAPI {
   getLocalPaintStyles?: () => IPaintStyle[]
   getLocalEffectStyles?: () => IEffectStyle[]
+  getLocalTextStyles?: () => ITextStyle[]
 }
 
-export function makePluginAPI({ getLocalPaintStyles, getLocalEffectStyles }: _IPluginAPI = {})
+export function makePluginAPI(
+  { getLocalPaintStyles,
+    getLocalEffectStyles,
+    getLocalTextStyles }: _IPluginAPI = {})
 : IPluginAPI {
   return {
     getLocalPaintStyles: getLocalPaintStyles || jest.fn(() => { return Array<IPaintStyle>() }),
     getLocalEffectStyles: getLocalEffectStyles || jest.fn(() => { return Array<IEffectStyle>() }),
+    getLocalTextStyles: getLocalTextStyles || jest.fn(() => { return Array<ITextStyle>() }),
   }
 }
 
@@ -120,4 +127,22 @@ export function makeBackgroundBlurEffect(): IBlurEffect {
 
 export function makeLayerBlurEffect({radius}: {radius?: number} = {}): IBlurEffect {
   return {type: 'LAYER_BLUR', radius: radius !== undefined ? radius : 10 }
+}
+
+/* Font Factories */
+interface _ITextStyle {
+  name?: string
+  description?: string
+  fontName?: IFontName,
+  fontSize?: number
+}
+
+export function makeTextStyle({ name, description, fontName, fontSize }: _ITextStyle = {})
+: ITextStyle {
+  return {
+    name: name || "default text",
+    description: description || "default description",
+    fontName: fontName !== undefined ? fontName : {family: 'SF Pro', style: 'Regular'},
+    fontSize: fontSize || 12
+  }
 }
