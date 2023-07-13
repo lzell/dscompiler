@@ -91,6 +91,16 @@ Run linter and apply fixes:
     npm run linter_fixer
 
 
+### Using system fonts
+
+- If your Figma designs use [SF or New York fonts](https://developer.apple.com/fonts/), dscompiler will map them to system fonts automatically.
+- Use the MacOS program 'Font Book' to browse fonts
+- If the font has a gear icon next to it [here](https://developer.apple.com/fonts/system-fonts/), then it is built in. If a font has a download icon, then you need to add it to your Xcode project.
+  - How to add a custom font to Xcode: [link](https://www.threads.net/t/Cujx_LEOS4e)
+- It would be great if we could automate this all away. Let the designer pick the font they want, and we modify the Xcode project if needed.
+
+
+
 ## References for project setup files
 
 - `manifest.json`
@@ -104,3 +114,4 @@ Run linter and apply fixes:
 
 - `jest.config.js`
 [Jest configuration for unit tests](https://jestjs.io/docs/configuration)
+

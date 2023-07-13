@@ -3,6 +3,7 @@ import { IColorStop } from '../src/core/origins/figma/api_bridge.ts'
 import { IDropShadowEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IEffectStyle } from '../src/core/origins/figma/api_bridge.ts'
+import { IFontName } from '../src/core/origins/figma/api_bridge.ts'
 import { IGradientPaint } from '../src/core/origins/figma/api_bridge.ts'
 import { IInnerShadowEffect } from '../src/core/origins/figma/api_bridge.ts'
 import { IPaint } from '../src/core/origins/figma/api_bridge.ts'
@@ -126,4 +127,22 @@ export function makeBackgroundBlurEffect(): IBlurEffect {
 
 export function makeLayerBlurEffect({radius}: {radius?: number} = {}): IBlurEffect {
   return {type: 'LAYER_BLUR', radius: radius !== undefined ? radius : 10 }
+}
+
+/* Font Factories */
+interface _ITextStyle {
+  name?: string
+  description?: string
+  fontName?: IFontName,
+  fontSize?: number
+}
+
+export function makeTextStyle({ name, description, fontName, fontSize }: _ITextStyle = {})
+: ITextStyle {
+  return {
+    name: name || "default text",
+    description: description || "default description",
+    fontName: fontName !== undefined ? fontName : {family: 'SF Pro', style: 'Regular'},
+    fontSize: fontSize || 12
+  }
 }

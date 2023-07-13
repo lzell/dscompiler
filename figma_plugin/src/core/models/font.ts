@@ -1,5 +1,6 @@
 export interface Font {
-  readonly atomName: string | null
+  readonly atomName: string
+  readonly description: string
   readonly size: number
 }
 

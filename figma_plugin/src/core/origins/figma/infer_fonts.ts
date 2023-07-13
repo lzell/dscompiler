@@ -18,7 +18,7 @@ export function inferFonts(figma: IPluginAPI): ReadonlyArray<Font> {
 export function textStyleToFont(textStyle: ITextStyle): CustomFont | SystemFont {
   const atomName = sanitizeName(textStyle.name)
   const isSystem = /^(sf|new york)/i
-  let font: Font = { atomName: atomName, size: textStyle.fontSize }
+  const font: Font = { atomName: atomName, description: textStyle.description, size: textStyle.fontSize }
   if (isSystem.test(textStyle.fontName.family)) {
     return {
       ...font,
@@ -60,4 +60,3 @@ function stripWhitespace(str: string): string {
 function postScriptFontName(fontName: IFontName): string {
   return  stripWhitespace(fontName.family) + '-' + stripWhitespace(fontName.style)
 }
-

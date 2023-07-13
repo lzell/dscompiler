@@ -97,6 +97,7 @@ export interface IBlurEffect {
 
 export interface ITextStyle {
   name: string
+  description: string
   fontSize: number
   fontName: IFontName
 }
