@@ -23,7 +23,7 @@ public extension Font {
     struct DesignSystem {
 `
   const indentLevel = 8
-  for (let font of fonts) {
+  for (const font of fonts) {
     swift_content += `${emitFont(font, indentLevel)}\n`
   }
   swift_content = swift_content.slice(0, -1)

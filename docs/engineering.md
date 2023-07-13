@@ -91,15 +91,14 @@ Run linter and apply fixes:
     npm run linter_fixer
 
 
-### Using system fonts
+### Mapping Figma text styles to SwiftUI fonts
 
 - If your Figma designs use [SF or New York fonts](https://developer.apple.com/fonts/), dscompiler will map them to system fonts automatically.
-- Use the MacOS program 'Font Book' to browse fonts
-- If the font has a gear icon next to it [here](https://developer.apple.com/fonts/system-fonts/), then it is built in. If a font has a download icon, then you need to add it to your Xcode project.
-  - How to add a custom font to Xcode: [link](https://www.threads.net/t/Cujx_LEOS4e)
+- For all other fonts, check to see if your desired font has a gear icon next to it in [Apple's system font list](https://developer.apple.com/fonts/system-fonts/)
+  - If the gear icon is present, then dscompiler will map your Figma text styles to custom font without any work on your end.
+  - If the gear icon is missing, then you must add your custom font to Xcode for dscompiler's mapping to work as expected.
+    - How to add a custom font to Xcode: [link](https://www.louzell.com/notes/swiftui_custom_font.html)
 - It would be great if we could automate this all away. Let the designer pick the font they want, and we modify the Xcode project if needed.
-
-
 
 ## References for project setup files
 
@@ -114,4 +113,3 @@ Run linter and apply fixes:
 
 - `jest.config.js`
 [Jest configuration for unit tests](https://jestjs.io/docs/configuration)
-
