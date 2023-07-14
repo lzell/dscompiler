@@ -98,7 +98,9 @@ Run linter and apply fixes:
   - If the gear icon is present, then dscompiler will map your Figma text styles to custom font without any work on your end.
   - If the gear icon is missing, then you must add your custom font to Xcode for dscompiler's mapping to work as expected.
     - How to add a custom font to Xcode: [link](https://www.louzell.com/notes/swiftui_custom_font.html)
+  - See the reference app [FontBrowser](https://github.com/lzell/FontBrowser) to view all built-in iOS fonts.
 - It would be great if we could automate this all away. Let the designer pick the font they want, and we modify the Xcode project if needed.
+  - From the Apple docs for using a build-in font: "You can find the postscript name of a font by opening it with the Font Book app and selecting the Font Info tab", [source](https://developer.apple.com/documentation/swiftui/applying-custom-fonts-to-text/)
 
 ## References for project setup files
 
