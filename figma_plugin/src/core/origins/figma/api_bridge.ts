@@ -108,24 +108,7 @@ export interface IFontName {
   readonly style: string
 }
 
-export interface IFrameNode {
-  readonly type: 'FRAME'
-  name: string
-}
 
-export declare type ISceneNode = IFrameNode | IComponentNode | IInstanceNode
-
-export interface IInstanceNode {
-  readonly type: 'INSTANCE'
-  name: string
-  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
-}
-
-export interface IComponentNode {
-  readonly type: 'COMPONENT'
-  name: string
-  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
-}
 
 export type ILZELLNode = IInstanceNode | IComponentNode
 
@@ -138,3 +121,76 @@ declare type IExportSettings = IExportSettingsPDF
 export interface IPageNode {
   readonly children: ReadonlyArray<ISceneNode>
 }
+
+
+export declare interface ISliceNode { readonly type: 'SLICE' }
+export interface IFrameNode {
+  readonly type: 'FRAME'
+  name: string
+}
+export declare interface IGroupNode { readonly type: 'GROUP' }
+export declare interface IComponentSetNode { readonly type: 'COMPONENT_SET' }
+export interface IComponentNode {
+  readonly type: 'COMPONENT'
+  name: string
+  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
+}
+export interface IInstanceNode {
+  readonly type: 'INSTANCE'
+  name: string
+  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
+}
+
+
+export declare interface IBooleanOperationNode { readonly type: 'BOOLEAN_OPERATION' }
+export declare interface IVectorNode { readonly type: 'VECTOR' }
+export declare interface IStarNode { readonly type: 'STAR' }
+export declare interface ILineNode { readonly type: 'LINE' }
+export declare interface IEllipseNode { readonly type: 'ELLIPSE' }
+export declare interface IPolygonNode { readonly type: 'POLYGON' }
+export declare interface IRectangleNode { readonly type: 'RECTANGLE' }
+export declare interface ITextNode { readonly type: 'TEXT' }
+export declare interface IStickyNode { readonly type: 'STICKY' }
+export declare interface IConnectorNode { readonly type: 'CONNECTOR' }
+export declare interface IShapeWithTextNode { readonly type: 'SHAPE_WITH_TEXT' }
+export declare interface ICodeBlockNode { readonly type: 'CODE_BLOCK' }
+export declare interface IStampNode { readonly type: 'STAMP' }
+export declare interface IWidgetNode { readonly type: 'WIDGET' }
+export declare interface IEmbedNode { readonly type: 'EMBED' }
+export declare interface ILinkUnfurlNode { readonly type: 'LINK_UNFURL' }
+export declare interface IMediaNode { readonly type: 'MEDIA' }
+export declare interface ISectionNode { readonly type: 'SECTION' }
+export declare interface IHighlightNode { readonly type: 'HIGHLIGHT' }
+export declare interface IWashiTapeNode { readonly type: 'WASHI_TAPE' }
+export declare interface ITableNode { readonly type: 'TABLE' }
+
+
+
+export declare type ISceneNode =
+  | ISliceNode
+  | IFrameNode
+  | IGroupNode
+  | IComponentSetNode
+  | IComponentNode
+  | IInstanceNode
+  | IBooleanOperationNode
+  | IVectorNode
+  | IStarNode
+  | ILineNode
+  | IEllipseNode
+  | IPolygonNode
+  | IRectangleNode
+  | ITextNode
+  | IStickyNode
+  | IConnectorNode
+  | IShapeWithTextNode
+  | ICodeBlockNode
+  | IStampNode
+  | IWidgetNode
+  | IEmbedNode
+  | ILinkUnfurlNode
+  | IMediaNode
+  | ISectionNode
+  | IHighlightNode
+  | IWashiTapeNode
+  | ITableNode
