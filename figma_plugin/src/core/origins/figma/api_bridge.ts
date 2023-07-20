@@ -108,10 +108,6 @@ export interface IFontName {
   readonly style: string
 }
 
-
-
-export type ILZELLNode = IInstanceNode | IComponentNode
-
 interface IExportSettingsPDF {
   readonly format: 'PDF'
 }
@@ -121,7 +117,6 @@ declare type IExportSettings = IExportSettingsPDF
 export interface IPageNode {
   readonly children: ReadonlyArray<ISceneNode>
 }
-
 
 export declare interface ISliceNode { readonly type: 'SLICE' }
 export interface IFrameNode {
@@ -140,7 +135,6 @@ export interface IInstanceNode {
   name: string
   exportAsync(settings?: IExportSettings): Promise<Uint8Array>
 }
-
 
 export declare interface IBooleanOperationNode { readonly type: 'BOOLEAN_OPERATION' }
 export declare interface IVectorNode { readonly type: 'VECTOR' }
@@ -163,7 +157,6 @@ export declare interface ISectionNode { readonly type: 'SECTION' }
 export declare interface IHighlightNode { readonly type: 'HIGHLIGHT' }
 export declare interface IWashiTapeNode { readonly type: 'WASHI_TAPE' }
 export declare interface ITableNode { readonly type: 'TABLE' }
-
 
 
 export declare type ISceneNode =

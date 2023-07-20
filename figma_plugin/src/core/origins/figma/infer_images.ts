@@ -1,6 +1,6 @@
 import { sanitizeName } from 'src/core/utils/common.ts'
 import { IPluginAPI } from 'src/core/origins/figma/api_bridge.ts'
-import { ILZELLNode } from 'src/core/origins/figma/api_bridge.ts'
+import { IInstanceNode, IComponentNode } from 'src/core/origins/figma/api_bridge.ts'
 import { Image } from 'src/core/models/image.ts'
 
 export function inferImages(figma: IPluginAPI): Promise<Image[]> {
@@ -29,11 +29,11 @@ export function inferImages(figma: IPluginAPI): Promise<Image[]> {
   return promise
 }
 
-export function getImageName(node: ILZELLNode): string {
+export function getImageName(node: IInstanceNode | IComponentNode): string {
   return sanitizeName(node.name)
 }
 
-function imageNodes(figma: IPluginAPI): ILZELLNode[] {
+function imageNodes(figma: IPluginAPI): (IInstanceNode|IComponentNode)[] {
     // @ts-ignore
     return swiftFrames().flatMap(frame => frame.findAll(node => (node.type == 'COMPONENT') || (node.type == 'INSTANCE')))
 }
