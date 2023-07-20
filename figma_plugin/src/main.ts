@@ -61,12 +61,39 @@ function returnSwiftUIFonts() {
   )
 }
 
+// Returns SwiftUI images to the caller (the browser environment)
+function returnSwiftUIImages() {
+  inferImages(figma).then((res) => {
+    console.log(res)
+    //figma.ui.postMessage(
+    //  {
+    //    'message': 'return-export-fonts-button-action',
+    //    'argument': {
+    //      'file_name': 'Font.swift',
+    //      'file_body': emitFonts(res),
+    //    }
+    //  }
+    //)
+
+  }).catch((err) => {
+    console.assert(false, err)
+  })
+  const frameRegex = new RegExp(/images?\.swift/, 'ig')
+  const frameAlternateRegex = new RegExp(/swift\.images?/, 'ig')
+  const frameNodes: FrameNode[] = figma.currentPage.children.filter(node =>
+    node.type == 'FRAME' && (node.name.match(frameRegex) || node.name.match(frameAlternateRegex))
+  )
+
+}
+
+
 const messageCallDictionary: Record<string, () => void> = {
   'close-button-action': figma.closePlugin,
   'export-colors-button-action': returnSwiftUIColors,
   'export-effects-button-action': returnSwiftUIEffects,
   'export-fonts-button-action': returnSwiftUIFonts,
   'export-gradients-button-action': returnSwiftUIGradients,
+  'export-images-button-action': returnSwiftUIImages,
 }
 
 figma.ui.onmessage = msg => {

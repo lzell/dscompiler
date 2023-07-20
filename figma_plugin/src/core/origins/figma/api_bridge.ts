@@ -22,6 +22,7 @@ export interface IPluginAPI {
   getLocalPaintStyles(): IPaintStyle[]
   getLocalEffectStyles(): IEffectStyle[]
   getLocalTextStyles(): ITextStyle[]
+  currentPage: IPageNode
 }
 
 export interface IPaintStyle {
@@ -105,4 +106,35 @@ export interface ITextStyle {
 export interface IFontName {
   readonly family: string
   readonly style: string
+}
+
+export interface IFrameNode {
+  readonly type: 'FRAME'
+  name: string
+}
+
+export declare type ISceneNode = IFrameNode | IComponentNode | IInstanceNode
+
+export interface IInstanceNode {
+  readonly type: 'INSTANCE'
+  name: string
+  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
+}
+
+export interface IComponentNode {
+  readonly type: 'COMPONENT'
+  name: string
+  exportAsync(settings?: IExportSettings): Promise<Uint8Array>
+}
+
+export type ILZELLNode = IInstanceNode | IComponentNode
+
+interface IExportSettingsPDF {
+  readonly format: 'PDF'
+}
+
+declare type IExportSettings = IExportSettingsPDF
+
+export interface IPageNode {
+  readonly children: ReadonlyArray<ISceneNode>
 }
