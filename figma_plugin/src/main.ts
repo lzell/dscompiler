@@ -6,6 +6,7 @@ import { inferColors } from 'src/core/origins/figma/infer_colors.ts'
 import { inferEffects } from 'src/core/origins/figma/infer_effects.ts'
 import { inferFonts } from 'src/core/origins/figma/infer_fonts.ts'
 import { inferGradients } from 'src/core/origins/figma/infer_gradients.ts'
+import { inferImages } from 'src/core/origins/figma/infer_images.ts'
 
 figma.showUI(__html__)
 
@@ -78,12 +79,6 @@ function returnSwiftUIImages() {
   }).catch((err) => {
     console.assert(false, err)
   })
-  const frameRegex = new RegExp(/images?\.swift/, 'ig')
-  const frameAlternateRegex = new RegExp(/swift\.images?/, 'ig')
-  const frameNodes: FrameNode[] = figma.currentPage.children.filter(node =>
-    node.type == 'FRAME' && (node.name.match(frameRegex) || node.name.match(frameAlternateRegex))
-  )
-
 }
 
 

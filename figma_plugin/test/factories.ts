@@ -30,6 +30,7 @@ export function makePluginAPI(
     getLocalPaintStyles: getLocalPaintStyles || jest.fn(() => { return Array<IPaintStyle>() }),
     getLocalEffectStyles: getLocalEffectStyles || jest.fn(() => { return Array<IEffectStyle>() }),
     getLocalTextStyles: getLocalTextStyles || jest.fn(() => { return Array<ITextStyle>() }),
+    currentPage: { children: [] }
   }
 }
 
